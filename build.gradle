@@ -17,7 +17,7 @@ ext{
 dependencies{
 	//compileOnly group: 'com.github.RW-HPS.RW-HPS', name: 'Server', version: 'master-SNAPSHOT'
 	//compileOnly group: 'com.github.RW-HPS', name: 'RW-HPS', version: '-SNAPSHOT'
-	compileOnly 'com.github.RW-HPS.RW-HPS:Server:58d0f04721'
+	compileOnly 'com.github.RW-HPS.RW-HPS:Server:5.4.1'
 
 }
 

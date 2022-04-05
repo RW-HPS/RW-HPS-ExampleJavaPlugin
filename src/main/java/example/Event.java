@@ -1,9 +1,9 @@
 package example;
 
-import com.github.dr.rwserver.data.player.Player;
-import com.github.dr.rwserver.net.netconnectprotocol.realize.GameVersionServer;
-import com.github.dr.rwserver.plugin.event.AbstractEvent;
-import com.github.dr.rwserver.util.Time;
+import cn.rwhps.server.data.player.Player;
+import cn.rwhps.server.net.netconnectprotocol.realize.GameVersionServer;
+import cn.rwhps.server.plugin.event.AbstractEvent;
+import cn.rwhps.server.util.Time;
 import org.jetbrains.annotations.NotNull;
 
 /**
