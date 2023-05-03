@@ -1,9 +1,20 @@
-apply plugin: "java"
-
+plugins {
+	id 'java'
+	//id 'maven'
+	id 'org.jetbrains.kotlin.jvm' version '1.8.20'
+}
 version '1.0'
 
-sourceCompatibility = 8
-targetCompatibility=8
+/* 使用Java11做标准语法并编译 */
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+compileKotlin {
+	kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}
+compileTestKotlin {
+	kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}
 
 repositories{
 	maven{ url "https://maven.aliyun.com/nexus/content/groups/public/"}
@@ -11,13 +22,10 @@ repositories{
 	maven{ url 'https://jitpack.io' }
 }
 
-ext{
-}
-
 dependencies{
 	//compileOnly group: 'com.github.RW-HPS.RW-HPS', name: 'Server', version: 'master-SNAPSHOT'
 	//compileOnly group: 'com.github.RW-HPS', name: 'RW-HPS', version: '-SNAPSHOT'
-	compileOnly 'com.github.RW-HPS:RW-HPS:18e2e06629'
+	compileOnly "com.github.RW-HPS.RW-HPS:Server-Core:2.0.0"
 
 }
 

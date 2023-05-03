@@ -1,16 +1,16 @@
 package example
 
-import cn.rwhps.server.data.global.Data
-import cn.rwhps.server.data.player.Player
-import cn.rwhps.server.data.plugin.PluginData
-import cn.rwhps.server.func.StrCons
-import cn.rwhps.server.net.Administration.ChatFilter
-import cn.rwhps.server.plugin.Plugin
-import cn.rwhps.server.plugin.event.AbstractEvent
-import cn.rwhps.server.util.Time.concurrentMillis
-import cn.rwhps.server.util.Time.getUtcMilliFormat
-import cn.rwhps.server.util.game.CommandHandler
-import cn.rwhps.server.util.log.Log.info
+import net.rwhps.server.data.global.Data
+import net.rwhps.server.data.player.Player
+import net.rwhps.server.data.plugin.PluginData
+import net.rwhps.server.func.StrCons
+import net.rwhps.server.net.Administration
+import net.rwhps.server.plugin.Plugin
+import net.rwhps.server.plugin.event.AbstractEvent
+import net.rwhps.server.util.Time.concurrentMillis
+import net.rwhps.server.util.Time.getUtcMilliFormat
+import net.rwhps.server.util.game.CommandHandler
+import net.rwhps.server.util.log.Log.info
 import java.util.*
 
 class MainKt : Plugin() {
@@ -33,7 +33,7 @@ class MainKt : Plugin() {
 
 
         //过滤消息
-        Data.core.admin.addChatFilter(object : ChatFilter {
+        Data.core.admin.addChatFilter(object : Administration.ChatFilter {
             override fun filter(player: Player, message: String?): String? {
                 if (message == null) {
                     return null

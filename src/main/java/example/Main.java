@@ -1,14 +1,17 @@
 package example;
 
-import cn.rwhps.server.data.global.Data;
-import cn.rwhps.server.data.player.Player;
-import cn.rwhps.server.data.plugin.PluginData;
-import cn.rwhps.server.func.StrCons;
-import cn.rwhps.server.plugin.Plugin;
-import cn.rwhps.server.plugin.event.AbstractEvent;
-import cn.rwhps.server.util.Time;
-import cn.rwhps.server.util.game.CommandHandler;
-import cn.rwhps.server.util.log.Log;
+import net.rwhps.server.data.HessModuleManage;
+import net.rwhps.server.data.global.Data;
+import net.rwhps.server.data.player.AbstractPlayer;
+import net.rwhps.server.data.player.Player;
+import net.rwhps.server.data.plugin.PluginData;
+import net.rwhps.server.func.StrCons;
+import net.rwhps.server.plugin.Plugin;
+import net.rwhps.server.plugin.event.AbstractEvent;
+import net.rwhps.server.util.Time;
+import net.rwhps.server.util.game.CommandHandler;
+import net.rwhps.server.util.log.Log;
+import net.rwhps.server.util.log.exp.ImplementedException;
 
 import java.util.Arrays;
 
@@ -39,8 +42,8 @@ public class Main extends Plugin {
 		String lastStartTimeString = this.pluginData.getData("lastStartTimeString",Time.getUtcMilliFormat(1));
 		Log.info("lastStartTime",lastStartTime);
 		Log.info("lastStartTimeString",lastStartTimeString);
-		this.pluginData.setData("lastStartTime",Time.concurrentMillis());
-		this.pluginData.setData("lastStartTimeString",Time.getUtcMilliFormat(1));
+		this.pluginData.getData("lastStartTime",Time.concurrentMillis());
+		this.pluginData.getData("lastStartTimeString", Time.getUtcMilliFormat(1));
 	}
 
 	@Override
@@ -73,22 +76,33 @@ public class Main extends Plugin {
 	@Override
 	public void registerServerClientCommands(CommandHandler handler){
 		//向自己回复消息
-		handler.<Player>register("reply", "<text...>", "#只取第一个回复.", (args, player) ->
-			player.sendSystemMessage("你发的是: " + args[0])
-		);
+		handler.<Player>register("reply", "<text...>", "#只取第一个回复.", (args, player) -> {
+			try {
+				player.sendSystemMessage("你发的是: " + args[0]);
+			} catch (ImplementedException.PlayerImplementedException e) {
+				throw new RuntimeException(e);
+			}
+		});
 
 		//向玩家发送
 		handler.<Player>register("whisper", "<player> <text...>", "#向另一个玩家发消息.", (args, player) -> {
 			//查找玩家
-			Player other = Data.game.getPlayerManage().playerGroup.find(p -> p.name.equalsIgnoreCase(args[0]));
+			AbstractPlayer other = HessModuleManage.INSTANCE.getHps().getRoom().getPlayerManage().playerGroup.find(p -> p.getName().equalsIgnoreCase(args[0]));
 
 			if(other == null){
-				player.sendSystemMessage("找不到这个玩家!");
+				try {
+					player.sendSystemMessage("找不到这个玩家!");
+				} catch (ImplementedException.PlayerImplementedException e) {
+				}
 				return;
 			}
 
 			//向玩家发消息
-			other.sendSystemMessage("玩家: " + player.name + " 向你发送: " + args[1]);
+			try {
+				other.sendSystemMessage("玩家: " + player.getName() + " 向你发送: " + args[1]);
+			} catch (ImplementedException.PlayerImplementedException e) {
+				throw new RuntimeException(e);
+			}
 		});
 	}
 

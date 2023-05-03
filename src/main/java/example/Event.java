@@ -1,10 +1,14 @@
 package example;
 
-import cn.rwhps.server.data.player.Player;
-import cn.rwhps.server.net.netconnectprotocol.realize.GameVersionServer;
-import cn.rwhps.server.plugin.event.AbstractEvent;
-import cn.rwhps.server.util.Time;
+
+import net.rwhps.server.data.event.GameOverData;
+import net.rwhps.server.data.player.AbstractPlayer;
+import net.rwhps.server.game.GameUnitType;
+import net.rwhps.server.plugin.event.AbstractEvent;
+import net.rwhps.server.util.Time;
+import net.rwhps.server.util.log.exp.ImplementedException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 这个是新的Event的实现
@@ -15,13 +19,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Event implements AbstractEvent {
     @Override
-    public void registerPlayerJoinEvent(Player player) {
-        player.sendSystemMessage("你好!! 这是RW-HPS新的Event的实现");
-        player.sendSystemMessage("Plugin测试 这是进入的时间 "+ Time.getUtcMilliFormat(1));
+    public void registerPlayerJoinEvent(AbstractPlayer player) {
+        try {
+            player.sendSystemMessage("你好!! 这是RW-HPS新的Event的实现");
+            player.sendSystemMessage("Plugin测试 这是进入的时间 "+ Time.getUtcMilliFormat(1));
+        } catch (ImplementedException.PlayerImplementedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void registerGameOverEvent() {
+    public void registerGameOverEvent(@Nullable GameOverData gameOverData) {
 
     }
 
@@ -31,28 +39,17 @@ public class Event implements AbstractEvent {
     }
 
     @Override
-    public void registerPlayerBanEvent(@NotNull Player player) {
+    public void registerPlayerBanEvent(@NotNull AbstractPlayer abstractPlayer) {
 
     }
 
     @Override
-    public void registerPlayerChatEvent(@NotNull Player player, @NotNull String s) {
+    public void registerPlayerChatEvent(@NotNull AbstractPlayer abstractPlayer, @NotNull String s) {
 
     }
 
     @Override
-    public void registerPlayerConnectEvent(@NotNull Player player) {
-
-    }
-
-    @NotNull
-    @Override
-    public String[] registerPlayerConnectPasswdCheckEvent(@NotNull GameVersionServer abstractNetConnect, @NotNull String s) {
-        return new String[] {"false",""};
-    }
-
-    @Override
-    public void registerPlayerIpBanEvent(@NotNull Player player) {
+    public void registerPlayerIpBanEvent(@NotNull AbstractPlayer abstractPlayer) {
 
     }
 
@@ -62,17 +59,22 @@ public class Event implements AbstractEvent {
     }
 
     @Override
-    public void registerPlayerLeaveEvent(@NotNull Player player) {
+    public void registerPlayerLeaveEvent(@NotNull AbstractPlayer abstractPlayer) {
 
     }
 
     @Override
-    public void registerPlayerReJoinEvent(@NotNull Player player) {
+    public boolean registerPlayerOperationUnitEvent(@NotNull AbstractPlayer abstractPlayer, @NotNull GameUnitType.GameActions gameActions, @NotNull GameUnitType.GameUnits gameUnits, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void registerPlayerUnbanEvent(@NotNull AbstractPlayer abstractPlayer) {
 
     }
 
     @Override
-    public void registerPlayerUnbanEvent(@NotNull Player player) {
+    public void registerServerHessStartPort() {
 
     }
 }
