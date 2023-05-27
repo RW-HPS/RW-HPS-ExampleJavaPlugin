@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	//id 'maven'
-	id 'org.jetbrains.kotlin.jvm' version '1.8.20'
+	id 'org.jetbrains.kotlin.jvm' version '1.8.21'
 }
 version '1.0'
 
@@ -30,6 +30,10 @@ dependencies{
 }
 
 jar{
+	// Fuck Java 9
+	exclude("META-INF/version/**")
+	exclude("**/module-info.class")
+
 	from{
 		configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
 	}
