@@ -1,17 +1,17 @@
 package example;
 
+import net.rwhps.server.data.EventManage;
 import net.rwhps.server.data.HessModuleManage;
 import net.rwhps.server.data.global.Data;
-import net.rwhps.server.data.player.AbstractPlayer;
-import net.rwhps.server.data.player.Player;
+import net.rwhps.server.data.player.PlayerHess;
 import net.rwhps.server.data.plugin.PluginData;
 import net.rwhps.server.func.StrCons;
 import net.rwhps.server.plugin.Plugin;
-import net.rwhps.server.plugin.event.AbstractEvent;
 import net.rwhps.server.util.Time;
 import net.rwhps.server.util.game.CommandHandler;
 import net.rwhps.server.util.log.Log;
 import net.rwhps.server.util.log.exp.ImplementedException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -26,7 +26,7 @@ public class Main extends Plugin {
 	@Override
 	public void init(){
 		// 设置Bin文件位置
-		pluginData.setFileUtil(this.pluginDataFileUtil.toFile("ExampleData.bin"));
+		pluginData.setFileUtil(this.pluginDataFileUtils.toFile("ExampleData.bin"), "gzip");
 		pluginData.read();
 
 		/* 过滤消息 */
@@ -47,8 +47,8 @@ public class Main extends Plugin {
 	}
 
 	@Override
-	public AbstractEvent registerEvents(){
-		return new Event();
+	public void registerEvents(@NotNull EventManage eventManage) {
+		eventManage.registerListener(new Event());
 	}
 
 	/**
@@ -57,15 +57,15 @@ public class Main extends Plugin {
 	@Override
 	public void registerServerCommands(CommandHandler handler){
 		handler.<StrCons>register("hi", "#这是Server命令简介", (arg, log) ->
-			log.get("hi")
+			log.invoke("hi")
 		);
 
 		handler.<StrCons>register("arg","<这是必填> [这是选填]", "#这是Server命令简介", (arg, log) ->
-			log.get(Arrays.toString(arg))
+			log.invoke(Arrays.toString(arg))
 		);
 
 		handler.<StrCons>register("args","<这是必填...>", "#这是Server命令简介", (arg, log) ->
-			log.get(arg[0])
+			log.invoke(arg[0])
 		);
 	}
 
@@ -76,7 +76,7 @@ public class Main extends Plugin {
 	@Override
 	public void registerServerClientCommands(CommandHandler handler){
 		//向自己回复消息
-		handler.<Player>register("reply", "<text...>", "#只取第一个回复.", (args, player) -> {
+		handler.<PlayerHess>register("reply", "<text...>", "#只取第一个回复.", (args, player) -> {
 			try {
 				player.sendSystemMessage("你发的是: " + args[0]);
 			} catch (ImplementedException.PlayerImplementedException e) {
@@ -85,9 +85,9 @@ public class Main extends Plugin {
 		});
 
 		//向玩家发送
-		handler.<Player>register("whisper", "<player> <text...>", "#向另一个玩家发消息.", (args, player) -> {
+		handler.<PlayerHess>register("whisper", "<player> <text...>", "#向另一个玩家发消息.", (args, player) -> {
 			//查找玩家
-			AbstractPlayer other = HessModuleManage.INSTANCE.getHps().getRoom().getPlayerManage().playerGroup.find(p -> p.getName().equalsIgnoreCase(args[0]));
+			PlayerHess other = HessModuleManage.INSTANCE.getHps().getRoom().getPlayerManage().playerGroup.find(p -> p.getName().equalsIgnoreCase(args[0]));
 
 			if(other == null){
 				try {

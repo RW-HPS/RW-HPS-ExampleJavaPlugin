@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	//id 'maven'
-	id 'org.jetbrains.kotlin.jvm' version '1.8.21'
+	id 'org.jetbrains.kotlin.jvm' version '1.9.0'
 }
 version '1.0'
 
@@ -25,7 +25,7 @@ repositories{
 dependencies{
 	//compileOnly group: 'com.github.RW-HPS.RW-HPS', name: 'Server', version: 'master-SNAPSHOT'
 	//compileOnly group: 'com.github.RW-HPS', name: 'RW-HPS', version: '-SNAPSHOT'
-	compileOnly "com.github.RW-HPS.RW-HPS:Server-Core:2.0.0"
+	compileOnly "com.github.RW-HPS.RW-HPS:Server-Core:3.0.0-M1"
 
 }
 
