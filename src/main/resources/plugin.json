@@ -4,5 +4,5 @@
   "main": "example.Main",
   "description": "example",
   "version": "1.0.0",
-  "supportedVersions": ">= 5.4.0"
+  "supportedVersions": ">= 3.0.0-M1"
 }
